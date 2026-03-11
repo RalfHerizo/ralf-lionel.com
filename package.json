@@ -1,0 +1,33 @@
+{
+  "name": "portfolio-ralf-lionel",
+  "version": "1.0.0",
+  "description": "Portfolio personnel - Ralf Lionel - Vercel Migration",
+  "main": "api/send-email.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'No build needed'",
+    "start": "node server.js"
+  },
+  "keywords": ["portfolio", "developer", "vercel"],
+  "author": "Ralf Lionel",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RalfHerizo/ralf-lionel.com.git"
+  },
+  "dependencies": {
+    "busboy": "^1.6.0",
+    "nodemailer": "^6.9.7",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "body-parser": "^1.20.2"
+  },
+  "engines": {
+    "node": "18.x"
+  },
+  "bugs": {
+    "url": "https://github.com/RalfHerizo/ralf-lionel.com/issues"
+  },
+  "homepage": "https://github.com/RalfHerizo/ralf-lionel.com#readme"
+}
