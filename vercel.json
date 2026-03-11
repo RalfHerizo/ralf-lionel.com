@@ -1,6 +1,9 @@
 {
   "version": 2,
   "public": ".",
+  "installCommand": "npm install",
+  "buildCommand": "npm run build",
+  "devCommand": "npx serve .",
   "functions": {
     "api/**/*.js": {
       "memory": 512,

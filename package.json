@@ -4,8 +4,9 @@
   "description": "Portfolio personnel - Ralf Lionel - Vercel Migration",
   "main": "api/send-email.js",
   "scripts": {
-    "dev": "vercel dev",
-    "build": "echo 'No build needed'"
+    "dev": "npx serve .",
+    "build": "echo 'No build needed'",
+    "vercel:dev": "vercel dev"
   },
   "keywords": ["portfolio", "developer", "vercel"],
   "author": "Ralf Lionel",
@@ -22,6 +23,7 @@
   "engines": {
     "node": "18.x"
   },
+  "packageManager": "npm@10.9.2",
   "bugs": {
     "url": "https://github.com/RalfHerizo/ralf-lionel.com/issues"
   },
