@@ -108,19 +108,19 @@ function parseMultipartForm(req) {
 }
 
 export default async function handler(req, res) {
-  // Définir les headers CORS
+  // Define les headers CORS
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
   res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
 
-  // Traiter les requêtes OPTIONS (CORS preflight)
+  // Traiter les requests OPTIONS (CORS preflight)
   if (req.method === 'OPTIONS') {
     res.status(200).end();
     return;
   }
 
-  // Seulement POST acceptés
+  // Seulement POST accepted
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -143,7 +143,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Invalid email address' });
     }
 
-    // Vérifier que les variables d'environnement sont définies
+    // Ensure que les variables environment sont définies
     if (!process.env.GMAIL_USER || !process.env.GMAIL_PASSWORD) {
       console.error('Missing Gmail credentials in environment variables');
       return res.status(500).json({ error: 'Server configuration error' });
@@ -158,7 +158,7 @@ export default async function handler(req, res) {
       },
     });
 
-    // Construire le contenu HTML de l'email
+    // Build le contenu HTML de l'email
     const htmlContent = `
       <!DOCTYPE html>
       <html>
@@ -176,19 +176,19 @@ export default async function handler(req, res) {
         <body>
           <div class="container">
             <div class="header">
-              <h2>📧 Nouveau message du portfolio</h2>
+              <h2>📧 New message from portfolio</h2>
             </div>
             <div class="content">
-              <div class="label">👤 Nom :</div>
+              <div class="label">👤 Name:</div>
               <div class="value">${name}</div>
 
-              <div class="label">📧 Email :</div>
+              <div class="label">📧 Email:</div>
               <div class="value">${email}</div>
 
-              <div class="label">📌 Sujet :</div>
+              <div class="label">📌 Subject:</div>
               <div class="value">${category}</div>
 
-              <div class="label">💬 Message :</div>
+              <div class="label">💬 Message:</div>
               <div class="value">${message.replace(/\n/g, '<br>')}</div>
             </div>
           </div>
@@ -211,11 +211,11 @@ export default async function handler(req, res) {
       }))
     });
 
-    console.log('Email envoyé avec succès:', info.messageId);
+    console.log('Email sent successfully:', info.messageId);
 
     return res.status(200).json({ 
       success: true, 
-      message: 'Message envoyé avec succès !',
+      message: 'Message sent successfully !',
       messageId: info.messageId
     });
 
@@ -225,8 +225,9 @@ export default async function handler(req, res) {
     const statusCode = error.statusCode || 500;
     return res.status(statusCode).json({
       error: 'Erreur lors de l\'envoi du message',
-      details: process.env.NODE_ENV === 'development' ? error.message : 'Veuillez reessayer plus tard'
+      details: process.env.NODE_ENV === 'development' ? error.Message: 'Please try again later'
     });
   }
 }
+
 
