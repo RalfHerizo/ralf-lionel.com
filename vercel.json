@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "buildCommand": "npm install",
   "public": ".",
   "functions": {
     "api/**/*.js": {
@@ -17,10 +16,5 @@
       "src": "/(.*)",
       "dest": "/$1"
     }
-  ],
-  "env": {
-    "GMAIL_USER": "@gmail_user",
-    "GMAIL_PASSWORD": "@gmail_app_password",
-    "RECIPIENT_EMAIL": "@recipient_email"
-  }
+  ]
 }
