@@ -1207,14 +1207,14 @@
                       <input type="text" class="form-control" name="category" required />
                     </div>
                     <div class="form-group form-group-material a-form-group">
-                      <label class="label">Message(optional)</label>
-                      <textarea class="form-control" name="message" cols="30" rows="3"></textarea>
+                      <label class="label">Message</label>
+                      <textarea class="form-control" name="message" cols="30" rows="3" required></textarea>
                     </div>
                     <div class="form-group control-file a-file">
-                      <input type="file" name="file_attach[]" multiple />
+                      <input type="file" name="file_attach[]" multiple accept=".pdf,.doc,.docx,.png,.jpg,.jpeg,.zip" />
                       <div class="file-path-wrapper">
                         <i class="lni lni-paperclip text-primary"></i>
-                        <input class="file-path form-control" placeholder="Upload file(.doc;.pdf)" />
+                        <input class="file-path form-control" placeholder="Upload file (.pdf, .doc, .docx, .jpg, .png, .zip)" />
                       </div>
                     </div>
                     <div class=" d-none justify-content-center snipper-form">
@@ -1268,16 +1268,17 @@
         </div>
         <div class="modal-body">
           <p class="slide-descr">Leave your contacts and I will contact you soon.</p>
-          <form class="form-request a-ajax-form" method="post">
-            <div class="form-group form-group-material a-form-group">
-              <input type="text" name="name" class="form-control" placeholder="Name">
-            </div>
-            <div class="form-group form-group-material a-form-group">
+            <form class="form-request a-ajax-form" method="post">
+              <div class="form-group form-group-material a-form-group">
+              <input type="text" name="name" class="form-control" placeholder="Name" required>
+              </div>
+              <div class="form-group form-group-material a-form-group">
               <input type="email" name="email" class="form-control" required="" placeholder="Email *">
-            </div>
-            <div class="form-group form-group-material a-form-group">
-              <textarea rows="3" name="message" class="form-control" placeholder="Message"></textarea>
-            </div>
+              </div>
+              <div class="form-group form-group-material a-form-group">
+              <textarea rows="3" name="message" class="form-control" placeholder="Message" required></textarea>
+              </div>
+              <input type="hidden" name="category" value="Request">
             <div class=" d-none justify-content-center snipper-form">
               <div class="spinner-border text-primary" role="status">
                 <span class="sr-only">Loading...</span>

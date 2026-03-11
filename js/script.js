@@ -183,7 +183,7 @@
             var thisForm = $(this);
             var succMessage = thisForm.find('.success-message');
             var errMessage = thisForm.find('.error-message');
-            var spinner = $('.snipper-form'); // Sélection du spinner
+            var spinner = thisForm.find('.snipper-form'); // Sélection du spinner
 
             thisForm.validate({
                 errorClass: 'error',
@@ -194,14 +194,17 @@
                     spinner.removeClass('d-none');
                     spinner.addClass('d-flex');
 
+                    succMessage.hide();
+                    errMessage.hide();
+
                     $.ajax({
                         type: 'POST',
-                        url: 'handler.php',
+                        url: '/api/send-email',
                         data: new FormData(form),
                         cache: false,
                         contentType: false, // Not to set any content header
                         processData: false, // Not to process data
-                        success: function (data) {
+                        success: function () {
 
                             // Vider le formulaire
                             form.reset();
@@ -212,11 +215,16 @@
 
                             succMessage.show();
                         },
-                        error: function () {
+                        error: function (xhr) {
                             // Masquer le spinner en cas d'erreur
                             spinner.removeClass('d-flex');
                             spinner.addClass('d-none');
 
+                            if (xhr && xhr.responseJSON && xhr.responseJSON.error) {
+                                errMessage.text(xhr.responseJSON.error);
+                            } else {
+                                errMessage.text('Sorry, something went wrong');
+                            }
                             errMessage.show();
                         }
                     });
