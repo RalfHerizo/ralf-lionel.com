@@ -16,9 +16,9 @@
     "url": "git+https://github.com/RalfHerizo/ralf-lionel.com.git"
   },
   "dependencies": {
-    "busboy": "^1.6.0",
-    "nodemailer": "^6.9.7",
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.3.1",
+    "formidable": "^3.5.2",
+    "nodemailer": "^6.9.7"
   },
   "engines": {
     "node": "18.x"

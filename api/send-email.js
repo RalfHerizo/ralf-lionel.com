@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
-import Busboy from 'busboy';
+import formidable from 'formidable';
+import path from 'path';
 
 dotenv.config();
 
@@ -23,87 +24,49 @@ export const config = {
   }
 };
 
+function isAllowedFile(file) {
+  if (!file || !file.originalFilename) return false;
+  const extension = path.extname(file.originalFilename).slice(1).toLowerCase();
+  return ALLOWED_EXTENSIONS.has(extension) && ALLOWED_MIME_TYPES.has(file.mimetype || '');
+}
+
+function collectFiles(files) {
+  const all = [];
+  const fileField = files['file_attach[]'] || files.file_attach;
+  if (Array.isArray(fileField)) return fileField;
+  if (fileField) all.push(fileField);
+  return all;
+}
+
 function parseMultipartForm(req) {
+  const form = formidable({
+    multiples: true,
+    maxFileSize: MAX_FILE_SIZE,
+    maxTotalFileSize: MAX_TOTAL_SIZE,
+    allowEmptyFiles: true
+  });
+
   return new Promise((resolve, reject) => {
-    let finished = false;
-    const fields = {};
-    const files = [];
-    let totalSize = 0;
-
-    const fail = (statusCode, message) => {
-      if (finished) return;
-      finished = true;
-      const err = new Error(message);
-      err.statusCode = statusCode;
-      reject(err);
-    };
-
-    const busboy = Busboy({
-      headers: req.headers,
-      limits: {
-        fileSize: MAX_FILE_SIZE
-      }
-    });
-
-    busboy.on('field', (name, value) => {
-      fields[name] = value;
-    });
-
-    busboy.on('file', (name, file, info) => {
-      const filename = info?.filename || '';
-      const mimeType = info?.mimeType || '';
-      const extension = filename.split('.').pop().toLowerCase();
-
-      if (!filename) {
-        file.resume();
+    form.parse(req, (err, fields, files) => {
+      if (err) {
+        const error = new Error(err.message || 'Upload error');
+        error.statusCode = err.code === 'maxFileSize' || err.code === 'maxTotalFileSize' ? 413 : 400;
+        reject(error);
         return;
       }
 
-      if (!ALLOWED_MIME_TYPES.has(mimeType) || !ALLOWED_EXTENSIONS.has(extension)) {
-        file.resume();
-        fail(400, 'Unsupported file type');
-        return;
-      }
-
-      const chunks = [];
-
-      file.on('data', (data) => {
-        totalSize += data.length;
-
-        if (totalSize > MAX_TOTAL_SIZE) {
-          file.resume();
-          fail(413, 'Total upload size exceeded');
+      const allFiles = collectFiles(files);
+      for (const file of allFiles) {
+        if (!isAllowedFile(file)) {
+          const error = new Error('Unsupported file type');
+          error.statusCode = 400;
+          reject(error);
           return;
         }
+      }
 
-        chunks.push(data);
-      });
-
-      file.on('limit', () => {
-        fail(413, 'File size exceeded');
-      });
-
-      file.on('end', () => {
-        if (finished) return;
-        files.push({
-          filename,
-          contentType: mimeType,
-          content: Buffer.concat(chunks)
-        });
-      });
+      resolve({ fields, files: allFiles });
     });
-
-    busboy.on('error', (err) => {
-      fail(500, err.message || 'Upload error');
-    });
-
-    busboy.on('finish', () => {
-      if (finished) return;
-      finished = true;
-      resolve({ fields, files });
-    });
-
-    req.pipe(busboy);
   });
 }
 
@@ -205,9 +168,9 @@ export default async function handler(req, res) {
       replyTo: email,
       text: `Nom: ${name}\nEmail: ${email}\nSujet: ${category}\n\nMessage:\n${message}`,
       attachments: files.map((file) => ({
-        filename: file.filename,
-        content: file.content,
-        contentType: file.contentType
+        filename: file.originalFilename || 'attachment',
+        path: file.filepath,
+        contentType: file.mimetype
       }))
     });
 
