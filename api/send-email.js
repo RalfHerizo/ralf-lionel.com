@@ -70,6 +70,13 @@ function parseMultipartForm(req) {
   });
 }
 
+function getFieldString(value) {
+  if (Array.isArray(value)) return value[0] || '';
+  if (typeof value === 'string') return value;
+  if (value === undefined || value === null) return '';
+  return String(value);
+}
+
 export default async function handler(req, res) {
   // Define les headers CORS
   res.setHeader('Access-Control-Allow-Credentials', 'true');
@@ -90,7 +97,10 @@ export default async function handler(req, res) {
 
   try {
     const { fields, files } = await parseMultipartForm(req);
-    const { name, email, category, message } = fields;
+    const name = getFieldString(fields.name);
+    const email = getFieldString(fields.email);
+    const category = getFieldString(fields.category);
+    const message = getFieldString(fields.message);
 
     // Validation des champs obligatoires
     if (!name || !email || !category || !message) {
