@@ -8,7 +8,11 @@
     "build": "echo 'No build needed'",
     "vercel:dev": "vercel dev"
   },
-  "keywords": ["portfolio", "developer", "vercel"],
+  "keywords": [
+    "portfolio",
+    "developer",
+    "vercel"
+  ],
   "author": "Ralf Lionel",
   "license": "ISC",
   "repository": {
@@ -18,7 +22,7 @@
   "dependencies": {
     "dotenv": "^16.3.1",
     "formidable": "^3.5.2",
-    "nodemailer": "^6.9.7"
+    "nodemailer": "^8.0.2"
   },
   "engines": {
     "node": "18.x"

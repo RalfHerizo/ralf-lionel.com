@@ -141,6 +141,7 @@ export default async function handler(req, res) {
             body { font-family: Arial, sans-serif; color: #333; }
             .container { max-width: 600px; margin: 0 auto; padding: 20px; }
             .header { background-color: #f0f0f0; padding: 20px; border-radius: 5px; margin-bottom: 20px; }
+            .header > h2{ text-align:center; }
             .content { margin-bottom: 20px; }
             .label { font-weight: bold; color: #555; margin-top: 15px; }
             .value { margin-top: 5px; padding: 10px; background-color: #f9f9f9; border-left: 3px solid #007bff; }
@@ -149,19 +150,19 @@ export default async function handler(req, res) {
         <body>
           <div class="container">
             <div class="header">
-              <h2>📧 New message from portfolio</h2>
+              <h2>New message from portfolio</h2>
             </div>
             <div class="content">
-              <div class="label">👤 Name:</div>
+              <div class="label">Name:</div>
               <div class="value">${name}</div>
 
-              <div class="label">📧 Email:</div>
+              <div class="label">Email:</div>
               <div class="value">${email}</div>
 
-              <div class="label">📌 Subject:</div>
+              <div class="label">Subject:</div>
               <div class="value">${category}</div>
 
-              <div class="label">💬 Message:</div>
+              <div class="label">Message:</div>
               <div class="value">${message.replace(/\n/g, '<br>')}</div>
             </div>
           </div>

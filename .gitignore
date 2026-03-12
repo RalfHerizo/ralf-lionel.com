@@ -14,3 +14,4 @@ vendor/
 fr/php/
 composer.lock
 .git/
+.env*.local
